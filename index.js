@@ -8,30 +8,11 @@ var ast = recast.parse(fs.readFileSync('../chokidar/index.js'));
 var startTime = process.hrtime();
 
 var reserved = [
-	'global',
-	'window',
-	'process',
-	'console',
-	'require',
-	'exports',
-	'module',
-	'arguments',
-	'setTimeout',
-	'clearTimeout',
-	'setInterval',
-	'clearInterval',
-	'setImmediate',
-	'clearImmediate',
-	'toString',
-	'parseInt',
-	'Object',
-	'Function',
-	'Array',
-	'String',
-	'RegExp',
-	'Buffer',
-	'Boolean',
-	'Date',
+	'global', 'window', 'process', 'console', 'require', 'exports', 'module',
+	'arguments', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
+	'setImmediate', 'clearImmediate', 'toString', 'parseInt', 'Object',
+	'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean', 'Date',
+	'Math', 'Number', 'NaN', 'Infinity', 'document', 'eval',
 ];
 
 var weirdIdentifiers = Object.create(null);
