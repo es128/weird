@@ -4,6 +4,7 @@
   "description": "Make your javascript use weird identifier names",
   "main": "index.js",
   "dependencies": {
+    "knuth-shuffle": "^1.0.1",
     "recast": "^0.9.3"
   },
   "devDependencies": {},
