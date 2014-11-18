@@ -21,7 +21,8 @@ function weirdAST(body) {
 	if (!body || !body.type) return;
 	if (body.type === 'Identifier' && reserved.indexOf(body.name) < 0) {
 		if (!(body.name in weirdIdentifiers)) {
-			weirdIdentifiers[body.name] = chars.start.shift();
+			weirdIdentifiers[body.name] =
+				chars.start.splice(0, body.name.length).join('');
 		}
 		body.name = weirdIdentifiers[body.name];
 	} else {
