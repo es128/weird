@@ -23,7 +23,7 @@ function weirdAST(body) {
 		body.name = 'elan';
 	} else {
 		Object.keys(body).forEach(function(key) {
-			if (key === 'property' || key === 'key') return;
+			if (key === 'key' || key === 'property' && !body.computed) return;
 			var obj = body[key];
 			if (obj && obj.type) weirdAST(obj);
 			else if (Array.isArray(obj)) obj.forEach(weirdAST);
