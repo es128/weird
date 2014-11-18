@@ -3,9 +3,9 @@
 var fs = require('fs');
 var recast = require('recast');
 
-var ast = recast.parse(fs.readFileSync('../chokidar/index.js'));
+var chars = require('./identifier-characters').shuffled;
 
-var startTime = process.hrtime();
+var ast = recast.parse(fs.readFileSync('../chokidar/index.js'));
 
 var reserved = [
 	'undefined', 'null', 'void', 'global', 'window', 'document', 'process',
@@ -20,8 +20,10 @@ var weirdIdentifiers = Object.create(null);
 function weirdAST(body) {
 	if (!body || !body.type) return;
 	if (body.type === 'Identifier' && reserved.indexOf(body.name) < 0) {
-		weirdIdentifiers[body.name] = body.name;
-		body.name = 'elan';
+		if (!(body.name in weirdIdentifiers)) {
+			weirdIdentifiers[body.name] = chars.start.shift();
+		}
+		body.name = weirdIdentifiers[body.name];
 	} else {
 		Object.keys(body).forEach(function(key) {
 			if (key === 'key' || key === 'property' && !body.computed) return;
@@ -35,6 +37,3 @@ function weirdAST(body) {
 ast.program.body.forEach(weirdAST);
 
 console.log(recast.print(ast).code);
-console.log(Object.keys(weirdIdentifiers).sort());
-console.log(Object.keys(weirdIdentifiers).length);
-console.log(process.hrtime(startTime))
