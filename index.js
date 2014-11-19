@@ -13,7 +13,7 @@ var reserved = [
 	'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
 	'setImmediate', 'clearImmediate', 'toString', 'parseInt', 'Object',
 	'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean', 'Date',
-	'Math', 'Number', 'NaN', 'Infinity',
+	'Math', 'Number', 'NaN', 'Infinity', '__filename', '__dirname'
 ];
 
 var weirdIdentifiers = Object.create(null);
