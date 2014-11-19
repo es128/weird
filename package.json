@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Make your javascript use weird identifier names",
   "main": "index.js",
+  "bin": {
+    "weirdify": "cli.js"
+  },
   "dependencies": {
     "knuth-shuffle": "^1.0.1",
     "recast": "^0.9.3"
