@@ -5,8 +5,6 @@ var recast = require('recast');
 
 var chars = require('./identifier-characters').shuffled;
 
-var ast = recast.parse(fs.readFileSync('../chokidar/index.js'));
-
 var reserved = [
 	'undefined', 'null', 'void', 'window', 'document', 'top', 'location',
 	'global', 'process', 'console', 'require', 'exports', 'module', 'eval',
@@ -35,6 +33,8 @@ function weirdAST(body) {
 	}
 }
 
-ast.program.body.forEach(weirdAST);
-
-console.log(recast.print(ast).code);
+module.exports = function weird(code, options) {
+	var ast = recast.parse(code, options);
+	ast.program.body.forEach(weirdAST);
+	return recast.print(ast, options);
+};
