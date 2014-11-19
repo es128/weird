@@ -8,12 +8,12 @@ var chars = require('./identifier-characters').shuffled;
 var ast = recast.parse(fs.readFileSync('../chokidar/index.js'));
 
 var reserved = [
-	'undefined', 'null', 'void', 'global', 'window', 'document', 'process',
-	'console', 'eval', 'arguments', 'require', 'exports', 'module',
+	'undefined', 'null', 'void', 'window', 'document', 'top', 'location',
+	'global', 'process', 'console', 'require', 'exports', 'module', 'eval',
 	'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
 	'setImmediate', 'clearImmediate', 'toString', 'parseInt', 'Object',
-	'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean', 'Date',
-	'Math', 'Number', 'NaN', 'Infinity', '__filename', '__dirname'
+	'arguments', 'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean',
+	'Date', 'Math', 'Number', 'NaN', 'Infinity', '__filename', '__dirname'
 ];
 
 var weirdIdentifiers = Object.create(null);
