@@ -34,7 +34,11 @@ function weirdAST(body) {
 }
 
 module.exports = function weird(code, options) {
+	var shebang, sbr = /^\#\![^\n]+/g;
+	if (shebang = code.match(sbr)) code = code.replace(sbr, '');
 	var ast = recast.parse(code, options);
 	ast.program.body.forEach(weirdAST);
-	return recast.print(ast, options);
+	var result = recast.print(ast, options);
+	if (shebang) result.code = shebang[0] + result.code;
+	return result;
 };
