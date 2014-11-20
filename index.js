@@ -29,10 +29,13 @@ function weirdAST(body) {
 		}
 		body.name = weirdIdentifiers[body.name];
 	} else {
-		if (body.type === 'MemberExpression' && !body.computed) {
+		if (
+			body.type === 'MemberExpression' &&
+			(!body.computed || body.property.type === 'Literal')
+		) {
 			var object = body.object.name;
 			if (object === 'window' || object === 'global') {
-				var prop = body.property.name;
+				var prop = body.property[body.computed ? 'value' : 'name'];
 				if (reserved.indexOf(prop) < 0) reserved.push(prop);
 			}
 		}
