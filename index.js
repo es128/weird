@@ -36,7 +36,9 @@ function weirdAST(body) {
 			var object = body.object.name;
 			if (object === 'window' || object === 'global') {
 				var prop = body.property[body.computed ? 'value' : 'name'];
-				if (reserved.indexOf(prop) < 0) reserved.push(prop);
+				if (reserved.indexOf(prop) < 0 && !weirdIdentifiers[prop]) {
+					reserved.push(prop);
+				}
 			}
 		}
 		Object.keys(body).forEach(function(key) {
