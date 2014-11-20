@@ -9,12 +9,13 @@ var reserved = [
 	'undefined', 'null', 'void', 'window', 'document', 'top', 'location',
 	'global', 'process', 'console', 'require', 'exports', 'module', 'define',
 	'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
-	'setImmediate', 'clearImmediate', 'arguments', 'eval', 'Error',
+	'setImmediate', 'clearImmediate', 'arguments', 'eval', 'atob', 'btoa',
 	'Object', 'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean',
 	'Date', 'Math', 'Number', 'NaN', 'Infinity', 'parseInt', 'parseFloat',
-	'toString', 'JSON', 'DOMParser', 'XMLHttpRequest', 'atob', 'btoa',
+	'toString', 'JSON', 'DOMParser', 'XMLHttpRequest',
 	'encodeURIComponent', 'decodeURIComponent', 'encodeURI', 'decodeURI',
-	'__filename', '__dirname'
+	'Error', 'TypeError', 'RangeError', 'SyntaxError', 'ReferenceError',
+	'URIError', 'EvalError', '__filename', '__dirname'
 
 ];
 
