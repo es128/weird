@@ -2,27 +2,12 @@
 
 var fs = require('fs');
 var recast = require('recast');
+var globals = require('globals');
 
 var chars = require('./identifier-characters').shuffled;
 
-var reserved = [
-	'undefined', 'null', 'void', 'window', 'document', 'top', 'location',
-	'global', 'process', 'console', 'require', 'exports', 'module', 'define',
-	'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
-	'setImmediate', 'clearImmediate', 'arguments', 'atob', 'btoa',
-	'Object', 'Function', 'Boolean', 'Symbol', 'String', 'RegExp', 'Buffer',
-	'Array', 'Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array',
-	'Uint16Array', 'Int32Array', 'Uint32Array', 'Float32Array', 'Float64Array',
-	'ParallelArray', 'ArrayBuffer', 'DataView', 'JSON', 'toString',
-	'Map', 'Set', 'WeakMap', 'WeakSet', 'parseInt', 'parseFloat', 'DOMParser',
-	'Date', 'Math', 'Number', 'NaN', 'Infinity', 'isNaN', 'isFinite',
-	'encodeURIComponent', 'decodeURIComponent', 'encodeURI', 'decodeURI',
-	'XMLHttpRequest', 'navigator', 'StopIteration', '__filename', '__dirname',
-	'Error', 'TypeError', 'RangeError', 'SyntaxError', 'ReferenceError',
-	'URIError', 'EvalError', 'eval', 'uneval', 'escape', 'unescape',
-	'Iterator', 'Generator', 'Promise', 'Reflect', 'Proxy', 'Intl'
-
-];
+var reserved = Object.keys(globals.builtin)
+	.concat(Object.keys(globals.browser), Object.keys(globals.node));
 
 var weirdIdentifiers = Object.create(null);
 function weirdAST(body) {
