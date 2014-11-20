@@ -12,8 +12,10 @@ var reserved = [
 	'setImmediate', 'clearImmediate', 'arguments', 'eval', 'Error',
 	'Object', 'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean',
 	'Date', 'Math', 'Number', 'NaN', 'Infinity', 'parseInt', 'parseFloat',
-	'toString', 'JSON', 'DOMParser', 'XMLHttpRequest', 'encodeURIComponent',
-	'atob', 'btoa', '__filename', '__dirname',
+	'toString', 'JSON', 'DOMParser', 'XMLHttpRequest', 'atob', 'btoa',
+	'encodeURIComponent', 'decodeURIComponent', 'encodeURI', 'decodeURI',
+	'__filename', '__dirname'
+
 ];
 
 var weirdIdentifiers = Object.create(null);
