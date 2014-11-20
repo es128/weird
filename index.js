@@ -7,11 +7,13 @@ var chars = require('./identifier-characters').shuffled;
 
 var reserved = [
 	'undefined', 'null', 'void', 'window', 'document', 'top', 'location',
-	'global', 'process', 'console', 'require', 'exports', 'module', 'eval',
+	'global', 'process', 'console', 'require', 'exports', 'module', 'define',
 	'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
-	'setImmediate', 'clearImmediate', 'toString', 'parseInt', 'Object',
-	'arguments', 'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean',
-	'Date', 'Math', 'Number', 'NaN', 'Infinity', '__filename', '__dirname'
+	'setImmediate', 'clearImmediate', 'arguments', 'eval', 'Error',
+	'Object', 'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean',
+	'Date', 'Math', 'Number', 'NaN', 'Infinity', 'parseInt', 'parseFloat',
+	'toString', 'JSON', 'DOMParser', 'XMLHttpRequest', 'encodeURIComponent',
+	'atob', 'btoa', '__filename', '__dirname',
 ];
 
 var weirdIdentifiers = Object.create(null);
