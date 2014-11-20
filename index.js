@@ -56,6 +56,7 @@ function weirdAST(body) {
 }
 
 module.exports = function weird(code, options) {
+	code += ''; // coerce to string
 	var shebang, sbr = /^\#\![^\n]+/g;
 	if (shebang = code.match(sbr)) code = code.replace(sbr, '');
 	var ast = recast.parse(code, options);
