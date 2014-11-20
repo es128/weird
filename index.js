@@ -12,7 +12,7 @@ var reserved = [
 	'setImmediate', 'clearImmediate', 'arguments', 'eval', 'atob', 'btoa',
 	'Object', 'Function', 'Array', 'String', 'RegExp', 'Buffer', 'Boolean',
 	'Date', 'Math', 'Number', 'NaN', 'Infinity', 'parseInt', 'parseFloat',
-	'toString', 'JSON', 'DOMParser', 'XMLHttpRequest',
+	'isNaN', 'toString', 'JSON', 'DOMParser', 'XMLHttpRequest',
 	'encodeURIComponent', 'decodeURIComponent', 'encodeURI', 'decodeURI',
 	'Error', 'TypeError', 'RangeError', 'SyntaxError', 'ReferenceError',
 	'URIError', 'EvalError', '__filename', '__dirname'
