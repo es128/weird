@@ -14,6 +14,7 @@ var reserved = Object.create(null);
 });
 
 var weirdIdentifiers = Object.create(null);
+var weirdIdentifiersInv = Object.create(null);
 var opts = {};
 function weirdAST(body) {
 	if (!body || !body.type) return;
@@ -24,8 +25,16 @@ function weirdAST(body) {
 		)
 	) {
 		if (!(body.name in weirdIdentifiers)) {
-			weirdIdentifiers[body.name] =
-				chars.start.splice(0, body.name.length).join('');
+			var newIdentifier;
+			var length = body.name.length;
+			var charset = chars.start;
+			var randLimit = charset.length - length;
+			while (!newIdentifier || newIdentifier in weirdIdentifiersInv) {
+				var i = Math.floor(Math.random() * randLimit);
+				newIdentifier = charset.slice(i, i + length).join('');
+			}
+			weirdIdentifiers[body.name] = newIdentifier;
+			weirdIdentifiersInv[newIdentifier] = body.name;
 		}
 		body.name = weirdIdentifiers[body.name];
 	} else {
