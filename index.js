@@ -27,11 +27,13 @@ function weirdAST(body) {
 		if (!(body.name in weirdIdentifiers)) {
 			var newIdentifier;
 			var length = body.name.length;
-			var charset = chars.start;
-			var randLimit = charset.length - length;
+			var charsStart = chars.start;
+			var charsAll = chars.all;
 			while (!newIdentifier || newIdentifier in weirdIdentifiersInv) {
-				var i = Math.floor(Math.random() * randLimit);
-				newIdentifier = charset.slice(i, i + length).join('');
+				var i = Math.floor(Math.random() * (charsAll.length - length));
+				newIdentifier =
+					charsStart[Math.floor(Math.random() * charsStart.length)] +
+					charsAll.slice(i, i + length - 1).join('');
 			}
 			weirdIdentifiers[body.name] = newIdentifier;
 			weirdIdentifiersInv[newIdentifier] = body.name;
