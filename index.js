@@ -6,13 +6,17 @@ var globals = require('globals');
 
 var chars = require('./identifier-characters').shuffled;
 
-var reserved = Object.keys(globals.builtin)
-	.concat(Object.keys(globals.browser), Object.keys(globals.node));
+var reserved = Object.create(null);
+['builtin', 'browser', 'node'].forEach(function(group) {
+	Object.keys(globals[group]).forEach(function(global) {
+		reserved[global] = 1;
+	});
+});
 
 var weirdIdentifiers = Object.create(null);
 function weirdAST(body) {
 	if (!body || !body.type) return;
-	if (body.type === 'Identifier' && reserved.indexOf(body.name) < 0) {
+	if (body.type === 'Identifier' && !reserved[body.name]) {
 		if (!(body.name in weirdIdentifiers)) {
 			weirdIdentifiers[body.name] =
 				chars.start.splice(0, body.name.length).join('');
@@ -26,8 +30,8 @@ function weirdAST(body) {
 			var object = body.object.name;
 			if (object === 'window' || object === 'global') {
 				var prop = body.property[body.computed ? 'value' : 'name'];
-				if (reserved.indexOf(prop) < 0 && !weirdIdentifiers[prop]) {
-					reserved.push(prop);
+				if (!reserved[prop] && !weirdIdentifiers[prop]) {
+					reserved[prop] = 2;
 				}
 			}
 		}
@@ -42,8 +46,14 @@ function weirdAST(body) {
 
 module.exports = function weird(code, options) {
 	code += ''; // coerce to string
+	if (!options) options = {};
 	var shebang, sbr = /^\#\![^\n]+/g;
 	if (shebang = code.match(sbr)) code = code.replace(sbr, '');
+	if (Array.isArray(options.reserved)) {
+		options.reserved.forEach(function(word) {
+			reserved[word] = 3;
+		});
+	}
 	var ast = recast.parse(code, options);
 	ast.program.body.forEach(weirdAST);
 	var result = recast.print(ast, options);
