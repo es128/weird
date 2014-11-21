@@ -14,9 +14,15 @@ var reserved = Object.create(null);
 });
 
 var weirdIdentifiers = Object.create(null);
+var opts = {};
 function weirdAST(body) {
 	if (!body || !body.type) return;
-	if (body.type === 'Identifier' && !reserved[body.name]) {
+	if (body.type === 'Identifier' &&
+		(
+			!reserved[body.name] ||
+			(opts.aliasGlobals && reserved[body.name] < 4)
+		)
+	) {
 		if (!(body.name in weirdIdentifiers)) {
 			weirdIdentifiers[body.name] =
 				chars.start.splice(0, body.name.length).join('');
@@ -30,7 +36,7 @@ function weirdAST(body) {
 			var object = body.object.name;
 			if (object === 'window' || object === 'global') {
 				var prop = body.property[body.computed ? 'value' : 'name'];
-				if (!reserved[prop] && !weirdIdentifiers[prop]) {
+				if (!(prop in reserved) && !weirdIdentifiers[prop]) {
 					reserved[prop] = 2;
 				}
 			}
@@ -44,16 +50,20 @@ function weirdAST(body) {
 	}
 }
 
+function specialLists(arr, id) {
+	if (!Array.isArray(arr)) return;
+	obj.forEach(function(word) { reserved[word] = id });
+}
+
 module.exports = function weird(code, options) {
 	code += ''; // coerce to string
 	if (!options) options = {};
+	opts = options;
 	var shebang, sbr = /^\#\![^\n]+/g;
 	if (shebang = code.match(sbr)) code = code.replace(sbr, '');
-	if (Array.isArray(options.reserved)) {
-		options.reserved.forEach(function(word) {
-			reserved[word] = 3;
-		});
-	}
+	specialLists(options.globals, 3);
+	specialLists(options.unreserved, 0);
+	specialLists(options.reserved, 4);
 	var ast = recast.parse(code, options);
 	ast.program.body.forEach(weirdAST);
 	var result = recast.print(ast, options);
