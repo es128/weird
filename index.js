@@ -52,7 +52,7 @@ function weirdAST(body) {
 
 function specialLists(arr, id) {
 	if (!Array.isArray(arr)) return;
-	obj.forEach(function(word) { reserved[word] = id });
+	arr.forEach(function(word) { reserved[word] = id });
 }
 
 module.exports = function weird(code, options) {
