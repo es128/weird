@@ -12,7 +12,10 @@ var sparse = {
 	startExt:  genCharArray(startRangesExt),
 	part:      genCharArray(partRangesSafe + partRangesExt),
 	partSafe:  genCharArray(partRangesSafe),
-	partExt:   genCharArray(partRangesExt)
+	partExt:   genCharArray(partRangesExt),
+	all:       genCharArray(startRangesSafe + startRangesExt + partRangesSafe + partRangesExt),
+	allSafe:   genCharArray(startRangesSafe + partRangesSafe),
+	allExt:    genCharArray(startRangesExt + partRangesExt)
 };
 var dense = {};
 var shuffled = {};
