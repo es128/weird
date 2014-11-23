@@ -12,6 +12,7 @@ var reserved = Object.create(null);
 		reserved[global] = 1;
 	});
 });
+reserved.toString = 1;
 
 var weirdIdentifiers = Object.create(null);
 var weirdIdentifiersInv = Object.create(null);
