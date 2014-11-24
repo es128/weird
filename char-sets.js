@@ -20,6 +20,7 @@ exports = {
 	lao: '\u0E80-\u0EFF',
 	tibetan: '\u0F00-\u0FFF',
 	myanmar: '\u1000-\u109F',
+	burmese: '\u1000-\u109F',
 	georgian: '\u10A0-\u10FF',
 	ethiopic: '\u1200-\u137F',
 	cherokee: '\u13A0-\u13FF',
