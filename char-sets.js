@@ -6,7 +6,7 @@ exports = {
 	arabic: '\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF',
 	syriac: '\u0700-\u074F',
 	thaana: '\u0780-\u07BF',
-	devanagari: '\u0900-\u097F',
+	devanagari: '\u0900-\u097F\u1CD0-\u1CFF\uA8E0-\uA8FF',
 	bengali: '\u0980-\u09FF',
 	gurmukhi: '\u0A00-\u0A7F',
 	gujarti: '\u0A80-\u0AFF',
