@@ -9,7 +9,7 @@ exports = {
 	devanagari: '\u0900-\u097F\u1CD0-\u1CFF\uA8E0-\uA8FF',
 	bengali: '\u0980-\u09FF',
 	gurmukhi: '\u0A00-\u0A7F',
-	gujarti: '\u0A80-\u0AFF',
+	gujarati: '\u0A80-\u0AFF',
 	oriya: '\u0B00-\u0B7F',
 	tamil: '\u0B80-\u0BFF',
 	telugu: '\u0C00-\u0C7F',
