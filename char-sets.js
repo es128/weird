@@ -23,7 +23,7 @@ exports = {
 	georgian: '\u10A0-\u10FF',
 	ethiopic: '\u1200-\u137F',
 	cherokee: '\u13A0-\u13FF',
-	canadian: '\u1400-\u167F',
+	canadian: '\u1400-\u167F\u18B0-\u18FF',
 	ogham: '\u1680-\u169F',
 	runic: '\u16A0-\u16FF',
 	tagolog: '\u1700-\u171F',
