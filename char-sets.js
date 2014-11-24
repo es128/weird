@@ -46,4 +46,8 @@ exports = {
 	hiragana: '\u3040-\u309F',
 	katakana: '\u30A0-\u30FF\u31F0-\u31FF',
 	kanji: '\u4E00-\u9FBF',
+	chinese: '\u3400-\u4DBF\u4E00-\u9FFF',
+	bopomofo: '\u3100-\u312F\u31A0-\u31BF',
+	mandarin: '\u3100-\u312F\u31A0-\u31BF',
+	yi: '\uA000-\uA4CF'
 };
