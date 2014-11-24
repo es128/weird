@@ -1,7 +1,7 @@
 exports = {
 	greek: '\u0370-\u03FF\u1F00-\u1FFF',
 	cyrillic: '\u0400-\u052F\u2DE0-\u2DFF\uA640-\uA69F',
-	armenian: '\u0530-\u058F',
+	armenian: '\u0530-\u058F\uFB13-\uFB17',
 	hebrew: '\u0590-\u05FF',
 	arabic: '\u0600-\u06FF',
 	syriac: '\u0700-\u074F',
