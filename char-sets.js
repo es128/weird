@@ -21,7 +21,7 @@ exports = {
 	tibetan: '\u0F00-\u0FFF',
 	myanmar: '\u1000-\u109F',
 	burmese: '\u1000-\u109F',
-	georgian: '\u10A0-\u10FF',
+	georgian: '\u10A0-\u10FF\u2D00-\u2D2F',
 	ethiopic: '\u1200-\u137F',
 	cherokee: '\u13A0-\u13FF',
 	canadian: '\u1400-\u167F\u18B0-\u18FF',
