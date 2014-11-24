@@ -31,6 +31,7 @@ exports = {
 	tagalog: '\u1700-\u171F',
 	baybayin: '\u1700-\u171F',
 	hanunoo: '\u1720-\u173F',
+	"hanunó'o": '\u1720-\u173F',
 	buhid: '\u1740-\u175F',
 	tagbanwa: '\u1760-\u177F',
 	khmer: '\u1780-\u17FF\u19E0-\u19FF',
