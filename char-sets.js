@@ -3,7 +3,7 @@ exports = {
 	cyrillic: '\u0400-\u052F\u2DE0-\u2DFF\uA640-\uA69F',
 	armenian: '\u0530-\u058F\uFB13-\uFB17',
 	hebrew: '\u0590-\u05FF\uFB1D-\uFB4F',
-	arabic: '\u0600-\u06FF',
+	arabic: '\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF',
 	syriac: '\u0700-\u074F',
 	thaana: '\u0780-\u07BF',
 	devanagari: '\u0900-\u097F',
