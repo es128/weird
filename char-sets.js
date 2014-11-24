@@ -37,7 +37,9 @@ exports = {
 	khmer: '\u1780-\u17FF\u19E0-\u19FF',
 	mongolian: '\u1800-\u18AF',
 	limbu: '\u1900-\u194F',
-	'tai_le': '\u1950-\u197F',
+	"tai_le": '\u1950-\u197F',
+	"tai le": '\u1950-\u197F',
+	"tai nüa": '\u1950-\u197F',
 	hangul: '\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\u3200-\u32FF\uA960-\uA97F\uD7B0-\uD7FF\uFF00-\uFFEF',
 	korean: '\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\u3200-\u32FF\uA960-\uA97F\uD7B0-\uD7FF\uFF00-\uFFEF',
 };
