@@ -108,7 +108,7 @@ exports = {
 		z: ['ᴢ']
 	},
 	flipped: {
-		fn: function reverse(s) { return s.split('').reverse().join(''); },
+		fn: function reverse() { return this.split('').reverse().join(''); },
 		A: ['∀'],
 		B: ['𐐒'],
 		C: ['Ɔ'],
