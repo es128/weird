@@ -3,8 +3,12 @@
 var fs = require('fs');
 var recast = require('recast');
 var globals = require('globals');
+var shuffle = require('knuth-shuffle').knuthShuffle;
 
-var chars = require('./identifier-characters').shuffled;
+var genCharArray = require('./generate-character-array');
+var chars = require('./identifier-characters');
+var charSets = require('./char-sets');
+var charMaps = require('./char-maps');
 
 var reserved = Object.create(null);
 ['builtin', 'browser', 'node'].forEach(function(group) {
@@ -17,6 +21,51 @@ reserved.toString = 1;
 var weirdIdentifiers = Object.create(null);
 var weirdIdentifiersInv = Object.create(null);
 var opts = {};
+
+function randPick(arr) {
+	return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function makeWeirdIdentifier(name) {
+	var newIdentifier;
+	var length = name.length;
+	var charsStart = chars.sparse.start;
+	var charsAll = chars.sparse.all;
+	if (opts.map) {
+		var mapper = charMaps[opts.map];
+		newIdentifier = (mapper.fn ? mapper.fn.apply(name) : name)
+			.split('').map(function(a, i) {
+				if (!Array.isArray(mapper[a])) return a;
+				var map = mapper[a].filter(function(c) {
+					return c.charCodeAt() in i ? charsAll : charsStart;
+				});
+				return randPick(map);
+			}).join('');
+	} else {
+		var startSet;
+		var allSet;
+		if (opts.set && charSets[opts.set]) {
+			var charArray = genCharArray(charSets[opts.set]);
+			startSet = charArray.filter(function(a) {
+				return a.charCodeAt() in charsStart;
+			});
+			allSet = charArray.filter(function(a) {
+				return a.charCodeAt() in charsStart;
+			});
+		} else {
+			startSet = shuffle(chars.dense.start.slice());
+			allSet = shuffle(chars.dense.all.slice());
+		}
+		while (!newIdentifier || newIdentifier in weirdIdentifiersInv) {
+			var i = Math.floor(Math.random() * (allSet.length - length));
+			newIdentifier = randPick(startSet) +
+				allSet.slice(i, i + length - 1).join('');
+		}
+	}
+	weirdIdentifiers[name] = newIdentifier;
+	weirdIdentifiersInv[newIdentifier] = name;
+}
+
 function weirdAST(body) {
 	if (!body || !body.type) return;
 	if (body.type === 'Identifier' &&
@@ -25,20 +74,7 @@ function weirdAST(body) {
 			(opts.aliasGlobals && reserved[body.name] < 4)
 		)
 	) {
-		if (!(body.name in weirdIdentifiers)) {
-			var newIdentifier;
-			var length = body.name.length;
-			var charsStart = chars.start;
-			var charsAll = chars.all;
-			while (!newIdentifier || newIdentifier in weirdIdentifiersInv) {
-				var i = Math.floor(Math.random() * (charsAll.length - length));
-				newIdentifier =
-					charsStart[Math.floor(Math.random() * charsStart.length)] +
-					charsAll.slice(i, i + length - 1).join('');
-			}
-			weirdIdentifiers[body.name] = newIdentifier;
-			weirdIdentifiersInv[newIdentifier] = body.name;
-		}
+		if (!(body.name in weirdIdentifiers)) makeWeirdIdentifier(body.name);
 		body.name = weirdIdentifiers[body.name];
 	} else {
 		if (
