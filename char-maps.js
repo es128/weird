@@ -1,4 +1,4 @@
-exports = {
+module.exports = {
 	accented: {
 		A: ['ÀÁÂÃÄÅĀĂĄ'],
 		B: ['ƁḂḄḆ'],
