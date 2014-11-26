@@ -31,13 +31,13 @@ function makeWeirdIdentifier(name) {
 	var length = name.length;
 	var charsStart = chars.sparse.start;
 	var charsAll = chars.sparse.all;
-	if (opts.map) {
+	if (opts.map && charMaps[opts.map]) {
 		var mapper = charMaps[opts.map];
 		newIdentifier = (mapper.fn ? mapper.fn.apply(name) : name)
-			.split('').map(function(a, i) {
-				if (!Array.isArray(mapper[a])) return a;
-				var map = mapper[a].filter(function(c) {
-					return c.charCodeAt() in i ? charsAll : charsStart;
+			.split('').map(function(a) {
+				if (!mapper[a]) return a;
+				var map = mapper[a].split('').filter(function(c) {
+					return c.charCodeAt() in (i ? charsAll : charsStart);
 				});
 				return randPick(map);
 			}).join('');
