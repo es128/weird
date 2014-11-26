@@ -26,7 +26,7 @@ module.exports = {
 	tibetan: '\u0F00-\u0FFF',
 	myanmar: '\u1000-\u109F',
 	burmese: '\u1000-\u109F',
-	georgian: '\u10A0-\u10FF\u2D00-\u2D2F',
+	georgian: 'ა-ჼ',
 	ethiopic: '\u1200-\u139F\u2D80-\u2DDF\uAB00-\uAB2F',
 	"ge'ez": '\u1200-\u139F\u2D80-\u2DDF\uAB00-\uAB2F',
 	cherokee: '\u13A0-\u13FF',
