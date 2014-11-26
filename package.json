@@ -7,7 +7,7 @@
     "weirdify": "cli.js"
   },
   "dependencies": {
-    "globals": "^1.0.0",
+    "globals": "^2.0.0",
     "knuth-shuffle": "^1.0.1",
     "recast": "^0.9.3"
   },
