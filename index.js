@@ -45,12 +45,12 @@ function makeWeirdIdentifier(name) {
 		var allSet;
 		if (opts.set && charSets[opts.set]) {
 			var charArray = genCharArray(charSets[opts.set]);
-			startSet = charArray.filter(function(a) {
+			startSet = shuffle(charArray.filter(function(a) {
 				return a.charCodeAt() in charsStart;
-			});
-			allSet = charArray.filter(function(a) {
+			}));
+			allSet = shuffle(charArray.filter(function(a) {
 				return a.charCodeAt() in charsStart;
-			});
+			}));
 		} else {
 			startSet = shuffle(chars.dense.start.slice());
 			allSet = shuffle(chars.dense.all.slice());
