@@ -201,4 +201,10 @@ module.exports = {
 		Y: 'ҰӋ',
 		Z: 'Ƶɀ'
 	},
+	starred: {
+		fn: function() { return this.split('').join('\u20f0') + '\u20f0'; }
+	},
+	scratched: {
+		fn: function() { return this.split('').join('\u20e6\u20eb\u0336') + '\u20e6\u20eb\u0336'; }
+	}
 };
