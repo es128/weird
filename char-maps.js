@@ -206,5 +206,8 @@ module.exports = {
 	},
 	scratched: {
 		fn: function() { return this.split('').join('\u20e6\u20eb\u0336\u0337\u0338') + '\u20e6\u20eb\u0336\u0337\u0338'; }
+	},
+	mouseears: {
+		fn: function() { var m = this.split(''); m.splice(Math.floor(this.length/2), 0, '\u059f'); return m.join(''); }
 	}
 };
