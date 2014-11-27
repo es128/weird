@@ -205,6 +205,6 @@ module.exports = {
 		fn: function() { return this.split('').join('\u20f0') + '\u20f0'; }
 	},
 	scratched: {
-		fn: function() { return this.split('').join('\u20e6\u20eb\u0336') + '\u20e6\u20eb\u0336'; }
+		fn: function() { return this.split('').join('\u20e6\u20eb\u0336\u0337\u0338') + '\u20e6\u20eb\u0336\u0337\u0338'; }
 	}
 };
