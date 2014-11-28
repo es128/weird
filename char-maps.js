@@ -209,5 +209,20 @@ module.exports = {
 	},
 	mouseears: {
 		fn: function() { var m = this.split(''); m.splice(Math.floor(this.length/2), 0, '\u059f'); return m.join(''); }
-	}
+	},
+	squished: {
+		a: 'ͣ',
+		c: 'ͨ',
+		d: 'ͩ',
+		e: 'ͤ',
+		h: 'ͪ',
+		i: 'ͥ',
+		m: 'ͫ',
+		o: 'ͦ',
+		r: 'ͬ',
+		t: 'ͭ',
+		u: 'ͧ',
+		v: 'ͮ',
+		x: 'ͯ'
+	},
 };
