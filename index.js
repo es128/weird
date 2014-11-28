@@ -33,12 +33,12 @@ function makeWeirdIdentifier(name) {
 	if (opts.map && charMaps[opts.map]) {
 		var mapper = charMaps[opts.map];
 		newIdentifier = (mapper.fn ? mapper.fn.apply(name) : name)
-			.split('').map(function(a) {
+			.split('').map(function(a, i) {
 				if (!mapper[a]) return a;
 				var map = mapper[a].split('').filter(function(c) {
 					return c.charCodeAt() in (i ? charsAll : charsStart);
 				});
-				return randPick(map);
+				return randPick(map) || a;
 			}).join('');
 	} else {
 		var startSet;
