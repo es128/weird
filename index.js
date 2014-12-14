@@ -10,7 +10,7 @@ var charSets = require('./char-sets');
 var charMaps = require('./char-maps');
 
 var reserved = Object.create(null);
-['builtin', 'browser', 'node'].forEach(function(group) {
+Object.keys(globals).forEach(function(group) {
 	Object.keys(globals[group]).forEach(function(global) {
 		reserved[global] = 1;
 	});
