@@ -12,7 +12,7 @@ var charMaps = require('./char-maps');
 var reserved = Object.create(null);
 Object.keys(globals).forEach(function(group) {
 	Object.keys(globals[group]).forEach(function(global) {
-		reserved[global] = 1;
+		reserved[global] = 1; // common globals
 	});
 });
 
@@ -83,7 +83,7 @@ function weirdAST(body) {
 			if (object === 'window' || object === 'global') {
 				var prop = body.property[body.computed ? 'value' : 'name'];
 				if (!(prop in reserved) && !weirdIdentifiers[prop]) {
-					reserved[prop] = 2;
+					reserved[prop] = 2; // global bindings detected from source
 				}
 			}
 		}
@@ -107,9 +107,9 @@ module.exports = function weird(code, options) {
 	opts = options;
 	var shebang, sbr = /^\#\![^\n]+/g;
 	if (shebang = code.match(sbr)) code = code.replace(sbr, '');
-	specialLists(options.globals, 3);
-	specialLists(options.unreserved, 0);
-	specialLists(options.reserved, 4);
+	specialLists(options.globals, 3); // user-provided globals
+	specialLists(options.unreserved, 0); // user-provided unreserved
+	specialLists(options.reserved, 4); // user-provided reserved
 	var ast = recast.parse(code, options);
 	ast.program.body.forEach(weirdAST);
 	var result = recast.print(ast, options);
