@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require('fs');
 var recast = require('recast');
 var globals = require('globals');
 var shuffle = require('knuth-shuffle').knuthShuffle;
