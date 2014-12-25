@@ -9,26 +9,46 @@ var chars = require('./identifier-characters');
 var charSets = require('./char-sets');
 var charMaps = require('./char-maps');
 
-var reserved = Object.create(null);
-Object.keys(globals).forEach(function(group) {
-	Object.keys(globals[group]).forEach(function(global) {
-		reserved[global] = 1; // common globals
-	});
-});
+function randPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-var weirdIdentifiers = Object.create(null);
-var weirdIdentifiersInv = Object.create(null);
-var opts = {};
-
-function randPick(arr) {
-	return arr[Math.floor(Math.random() * arr.length)];
+function mapList(arr, id) {
+	if (!Array.isArray(arr)) return;
+	arr.forEach(function(word) { this[word] = id });
 }
 
-function makeWeirdIdentifier(name) {
+function Weird(options) {
+	this.options = options || {};
+	var reserved = {arguments: {value: 4, enumerable: true}};
+	var globalEnvs = ['builtin'];
+	var env = options.env;
+	if (env) {
+		if (!Array.isArray(options.env)) env = env.split(/[,\s]+/);
+		globalEnvs.concat(env);
+	}
+	globalEnvs.forEach(function(group) {
+		if (!globals[group]) return;
+		Object.keys(globals[group]).forEach(function(global) {
+			reserved[global] = {value: 1, enumerable: true}; // common globals
+		});
+	});
+	this.reserved = Object.create(null, reserved);
+
+	var processReserved = mapList.bind(this.reserved);
+	processReserved(options.globals, 3); // user-provided globals
+	processReserved(options.unreserved, 0); // user-provided unreserved
+	processReserved(options.reserved, 4); // user-provided reserved
+
+	this.identifiers = Object.create(null);
+	this.identifiersInv = Object.create(null);
+	return this;
+}
+
+Weird.prototype.makeIdentifier = function(name) {
 	var newIdentifier;
 	var length = name.length;
 	var charsStart = chars.sparse.start;
 	var charsAll = chars.sparse.all;
+	var opts = this.options;
 	if (opts.map && charMaps[opts.map]) {
 		var mapper = charMaps[opts.map];
 		newIdentifier = (mapper.fn ? mapper.fn.apply(name) : name)
@@ -54,35 +74,32 @@ function makeWeirdIdentifier(name) {
 			startSet = shuffle(chars.dense.start.slice());
 			allSet = shuffle(chars.dense.all.slice());
 		}
-		while (!newIdentifier || newIdentifier in weirdIdentifiersInv) {
+		while (!newIdentifier || newIdentifier in this.identifiersInv) {
 			var i = Math.floor(Math.random() * (allSet.length - length));
 			newIdentifier = randPick(startSet) +
 				allSet.slice(i, i + length - 1).join('');
 		}
 	}
-	weirdIdentifiers[name] = newIdentifier;
-	weirdIdentifiersInv[newIdentifier] = name;
-}
+	this.identifiers[name] = newIdentifier;
+	this.identifiersInv[newIdentifier] = name;
+};
 
-function weirdAST(body) {
+Weird.prototype.processAST = function(body) {
 	if (!body || !body.type) return;
-	if (body.type === 'Identifier' &&
-		(
-			!reserved[body.name] ||
-			(opts.aliasGlobals && reserved[body.name] < 4)
-		)
-	) {
-		if (!(body.name in weirdIdentifiers)) makeWeirdIdentifier(body.name);
-		body.name = weirdIdentifiers[body.name];
+	var reserved = this.reserved;
+	var opts = this.options;
+	var resCode = reserved[body.name];
+	var canChange = !resCode || (opts.aliasGlobals && resCode < 4);
+	if (body.type === 'Identifier' && canChange) {
+		if (!(body.name in this.identifiers)) this.makeIdentifier(body.name);
+		body.name = this.identifiers[body.name];
 	} else {
-		if (
-			body.type === 'MemberExpression' &&
-			(!body.computed || body.property.type === 'Literal')
-		) {
+		var hasIdentifier = !body.computed || body.property.type === 'Literal';
+		if (body.type === 'MemberExpression' && hasIdentifier) {
 			var object = body.object.name;
 			if (object === 'window' || object === 'global') {
 				var prop = body.property[body.computed ? 'value' : 'name'];
-				if (!(prop in reserved) && !weirdIdentifiers[prop]) {
+				if (!(prop in reserved) && !this.identifiers[prop]) {
 					reserved[prop] = 2; // global bindings detected from source
 				}
 			}
@@ -90,29 +107,40 @@ function weirdAST(body) {
 		Object.keys(body).forEach(function(key) {
 			if (key === 'key' || key === 'property' && !body.computed) return;
 			var obj = body[key];
-			if (obj && obj.type) weirdAST(obj);
-			else if (Array.isArray(obj)) obj.forEach(weirdAST);
-		});
+			if (obj && obj.type) this.processAST(obj);
+			else if (Array.isArray(obj)) obj.forEach(this.processAST, this);
+		}, this);
 	}
-}
+};
 
-function specialLists(arr, id) {
-	if (!Array.isArray(arr)) return;
-	arr.forEach(function(word) { reserved[word] = id });
-}
+Weird.prototype.aliasGlobals = function(ast) {
+	var b = recast.types.builders;
+	ast.program.body.unshift(b.variableDeclaration('var',
+		Object.keys(this.identifiers).filter(function(id) {
+			return this.reserved[id] < 4;
+		}, this).map(function(id) {
+			return b.variableDeclarator(
+				b.identifier(this.identifiers[id]),
+				b.identifier(id)
+			);
+		}, this)
+	));
+};
 
-module.exports = function weird(code, options) {
+Weird.prototype.processCode = function(code) {
 	code += ''; // coerce to string
-	if (!options) options = {};
-	opts = options;
 	var shebang, sbr = /^\#\![^\n]+/g;
 	if (shebang = code.match(sbr)) code = code.replace(sbr, '');
-	specialLists(options.globals, 3); // user-provided globals
-	specialLists(options.unreserved, 0); // user-provided unreserved
-	specialLists(options.reserved, 4); // user-provided reserved
-	var ast = recast.parse(code, options);
-	ast.program.body.forEach(weirdAST);
-	var result = recast.print(ast, options);
+	var ast = recast.parse(code, this.options);
+	ast.program.body.forEach(this.processAST, this);
+	if (this.options.aliasGlobals) this.aliasGlobals(ast);
+	var result = recast.print(ast, this.options);
 	if (shebang) result.code = shebang[0] + result.code;
 	return result;
 };
+
+module.exports = function(code, options) {
+	return (new Weird(options)).processCode(code);
+};
+
+module.exports.Processor = Weird;
