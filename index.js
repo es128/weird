@@ -115,7 +115,27 @@ Weird.prototype.processAST = function(body) {
 
 Weird.prototype.aliasGlobals = function(ast) {
 	var b = recast.types.builders;
-	ast.program.body.unshift(b.variableDeclaration('var',
+	var block = ast.program.body;
+	var position = 0;
+
+	// ensure 'use strict' stays on top
+	var topExpr = block[0].type.expression;
+	if (topExpr && topExpr.value === 'use strict') {
+		position = 1;
+	}
+
+	// if entire script is an iife, keep it that way by wrapping in a new one
+	var nextExpr = block[position].expression;
+	if (block.length === position + 1 && nextExpr && nextExpr.type === 'CallExpression') {
+		var newBlock = b.blockStatement([block[position]]);
+		block[position] = b.expressionStatement(
+			b.callExpression(b.functionExpression(null, [], newBlock), [])
+		);
+		block = newBlock.body;
+		position = 0;
+	}
+
+	block.splice(position, 0, b.variableDeclaration('var',
 		Object.keys(this.identifiers).filter(function(id) {
 			return this.reserved[id] < 4;
 		}, this).map(function(id) {
