@@ -23,7 +23,7 @@ function Weird(options) {
 	var env = options.env;
 	if (env) {
 		if (!Array.isArray(options.env)) env = env.split(/[,\s]+/);
-		globalEnvs.concat(env);
+		globalEnvs = globalEnvs.concat(env);
 	}
 	globalEnvs.forEach(function(group) {
 		if (!globals[group]) return;
